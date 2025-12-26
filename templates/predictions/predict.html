@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>IA Prediction</title>
+</head>
+
+<body>
+    <h1>Executar modelo de IA</h1>
+
+    <form method="post">
+        {% csrf_token %}
+        <input type="number" step="any" name="input_value" required>
+        <button type="submit">Executar</button>
+    </form>
+
+    {% if result %}
+    <h2>Resultado da IA:</h2>
+    <p>{{ result }}</p>
+    {% endif %}
+</body>
+
+</html>
