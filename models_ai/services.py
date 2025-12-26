@@ -19,10 +19,14 @@ def extract_expense_details(text: str):
 
     # Categorias simples baseadas em palavras-chave
     categories = {
-        'alimentação': ['café', 'restaurante', 'almoço', 'jantar', 'comida', 'ifood', 'burger', 'starbucks'],
-        'transporte': ['uber', '99', 'gasolina', 'combustível', 'ônibus', 'metrô'],
-        'lazer': ['cinema', 'show', 'teatro', 'viagem', 'netflix', 'spotify', 'jogo'],
-        'contas': ['aluguel', 'luz', 'água', 'internet', 'celular', 'energia'],
+        'alimentação': ['café', 'restaurante', 'almoço', 'jantar', 'comida', 'ifood', 'burger', 'starbucks', 'padaria', 'lanche', 'pizza'],
+        'transporte': ['uber', '99', 'gasolina', 'combustível', 'ônibus', 'metrô', 'estacionamento', 'pedágio', 'ipva', 'oficina'],
+        'lazer': ['cinema', 'show', 'teatro', 'viagem', 'netflix', 'spotify', 'jogo', 'festa', 'bar', 'cerveja', 'clube'],
+        'contas': ['aluguel', 'luz', 'água', 'internet', 'celular', 'energia', 'condomínio', 'gás', 'iptu', 'seguro'],
+        'saúde': ['farmácia', 'médico', 'hospital', 'dentista', 'remédio', 'exame', 'plano de saúde'],
+        'mercado': ['supermercado', 'mercado', 'extra', 'carrefour', 'pão de açúcar', 'atacadão', 'feira'],
+        'compras': ['amazon', 'shopping', 'roupa', 'sapato', 'eletrônico', 'presente', 'magalu', 'mercadolivre'],
+        'educação': ['curso', 'faculdade', 'escola', 'livro', 'mensalidade', 'material escolar'],
     }
 
     category = "Outros"

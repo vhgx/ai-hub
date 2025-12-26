@@ -4,6 +4,9 @@ from django.contrib.auth.decorators import login_required
 from .models import Prediction
 from models_ai.services import extract_expense_details
 
+def intro_view(request):
+    return render(request, "predictions/intro.html")
+
 @login_required
 def predict_view(request):
     result = None

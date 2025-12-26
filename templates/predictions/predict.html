@@ -22,8 +22,16 @@
 <body>
     <div class="container">
         <header>
-            <h1>AI Hub Finanças</h1>
+            <a href="{% url 'home' %}" style="text-decoration: none;">
+                <h1>AI Hub Finanças</h1>
+            </a>
             <p>Organize sua vida financeira com o poder da inteligência artificial.</p>
+            <nav class="home-nav">
+                <a href="{% url 'home' %}" class="back-home">
+                    <i style="width: 16px;"></i>
+                    Voltar para Home
+                </a>
+            </nav>
         </header>
 
         <main>
@@ -78,7 +86,7 @@
                                 {{ item.date|date:"d M, Y" }} às {{ item.date|date:"H:i" }}
                             </div>
                         </div>
-                        <div style="text-align: right;">
+                        <div class="history-stats">
                             <div class="price">R$ {{ item.output.amount|default:"0.00" }}</div>
                             <span class="badge">{{ item.output.category|default:"Indefinido" }}</span>
                         </div>
