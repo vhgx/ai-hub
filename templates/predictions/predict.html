@@ -1,23 +1,99 @@
+{% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="pt-br">
 
 <head>
-    <title>IA Prediction</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Hub | Finanças Inteligentes</title>
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
-    <h1>Executar modelo de IA</h1>
+    <div class="container">
+        <header>
+            <h1>AI Hub Finanças</h1>
+            <p>Organize sua vida financeira com o poder da inteligência artificial.</p>
+        </header>
 
-    <form method="post">
-        {% csrf_token %}
-        <input type="number" step="any" name="input_value" required>
-        <button type="submit">Executar</button>
-    </form>
+        <main>
+            <section class="card">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="input-container">
+                        <input type="text" name="input_value"
+                            placeholder="O que você comprou hoje? (Ex: Almoço no shopping R$ 35)" required
+                            autocomplete="off">
+                        <button type="submit">
+                            <span>Processar</span>
+                            <i data-lucide="sparkles"></i>
+                        </button>
+                    </div>
+                </form>
 
-    {% if result %}
-    <h2>Resultado da IA:</h2>
-    <p>{{ result }}</p>
-    {% endif %}
+                {% if result %}
+                <div class="result-area">
+                    <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i data-lucide="check-circle" style="color: var(--accent); width: 20px;"></i>
+                        IA Identificou:
+                    </h3>
+                    <div class="result-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Valor Estimado</span>
+                            <div class="stat-value amount">R$ {{ result.amount }}</div>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Categoria Sugerida</span>
+                            <div class="stat-value">{{ result.category }}</div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+
+            {% if history %}
+            <section class="history-section">
+                <h2>
+                    <i data-lucide="history"></i>
+                    Atividade Recente
+                </h2>
+                <div class="history-grid">
+                    {% for item in history %}
+                    <div class="history-card">
+                        <div class="history-main">
+                            <p>{{ item.input }}</p>
+                            <div class="history-meta">
+                                <i data-lucide="calendar"
+                                    style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                                {{ item.date|date:"d M, Y" }} às {{ item.date|date:"H:i" }}
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div class="price">R$ {{ item.output.amount|default:"0.00" }}</div>
+                            <span class="badge">{{ item.output.category|default:"Indefinido" }}</span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </main>
+    </div>
+
+    <script>
+        // Inicializa os ícones Lucide
+        lucide.createIcons();
+    </script>
 </body>
 
 </html>
