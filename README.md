@@ -82,6 +82,40 @@ Atualmente, o sistema utiliza um modelo baseado em heurísticas e expressões re
 
 ---
 
+## ✅ Controle de Qualidade (QA)
+
+O projeto conta com uma suíte robusta de testes automatizados para garantir a estabilidade e qualidade do código.
+
+### **Stack de Testes**
+- **Runner**: `pytest` (Configurado via `pytest.ini`)
+- **Unit & Integration**: `pytest-django`
+- **End-to-End (E2E)**: `Playwright`
+
+### **Como Rodar os Testes**
+
+1.  **Todos os Testes**:
+    ```bash
+    pytest
+    ```
+
+2.  **Apenas Testes Unitários e de Integração**:
+    ```bash
+    pytest models_ai/ predictions/ users/
+    ```
+
+3.  **Testes End-to-End (E2E)**:
+    *   Rodar em modo "Headless" (sem abrir navegador):
+        ```bash
+        pytest e2e/tests/
+        ```
+    *   Rodar visualizando o navegador (Headed):
+        ```bash
+        pytest e2e/tests/ --headed
+        ```
+    > **Nota**: Na primeira execução do E2E, pode ser necessário instalar os navegadores do Playwright: `playwright install chromium`
+
+---
+
 ## 🔮 Próximos Passos
 
 - [ ] Integração com APIs reais de Open Banking.

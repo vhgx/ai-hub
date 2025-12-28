@@ -1,107 +1,80 @@
+{% extends "base.html" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Hub | Finanças Inteligentes</title>
+{% block title %}AI Hub | Finanças Inteligentes{% endblock %}
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Outfit:wght@700;800&display=swap"
-        rel="stylesheet">
+{% block content %}
+<header>
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+        <h1>AI Hub Finanças</h1>
+    </a>
+    <p>Organize sua vida financeira com o poder da inteligência artificial.</p>
+    <nav class="home-nav">
+        <a href="{% url 'home' %}" class="back-home">
+            <i style="width: 16px;"></i>
+            Voltar para Home
+        </a>
+    </nav>
+</header>
 
-    <!-- Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
+<main>
+    <section class="card">
+        <form method="post">
+            {% csrf_token %}
+            <div class="input-container">
+                <input type="text" name="input_value"
+                    placeholder="O que você comprou hoje? (Ex: Almoço no shopping R$ 35)" required autocomplete="off">
+                <button type="submit">
+                    <span>Processar</span>
+                    <i data-lucide="sparkles"></i>
+                </button>
+            </div>
+        </form>
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
-</head>
+        {% if result %}
+        <div class="result-area">
+            <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+                <i data-lucide="check-circle" style="color: var(--accent); width: 20px;"></i>
+                IA Identificou:
+            </h3>
+            <div class="result-grid">
+                <div class="stat-card">
+                    <span class="stat-label">Valor Estimado</span>
+                    <div class="stat-value amount">R$ {{ result.amount }}</div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-label">Categoria Sugerida</span>
+                    <div class="stat-value">{{ result.category }}</div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </section>
 
-<body>
-    <div class="container">
-        <header>
-            <a href="{% url 'home' %}" style="text-decoration: none;">
-                <h1>AI Hub Finanças</h1>
-            </a>
-            <p>Organize sua vida financeira com o poder da inteligência artificial.</p>
-            <nav class="home-nav">
-                <a href="{% url 'home' %}" class="back-home">
-                    <i style="width: 16px;"></i>
-                    Voltar para Home
-                </a>
-            </nav>
-        </header>
-
-        <main>
-            <section class="card">
-                <form method="post">
-                    {% csrf_token %}
-                    <div class="input-container">
-                        <input type="text" name="input_value"
-                            placeholder="O que você comprou hoje? (Ex: Almoço no shopping R$ 35)" required
-                            autocomplete="off">
-                        <button type="submit">
-                            <span>Processar</span>
-                            <i data-lucide="sparkles"></i>
-                        </button>
-                    </div>
-                </form>
-
-                {% if result %}
-                <div class="result-area">
-                    <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                        <i data-lucide="check-circle" style="color: var(--accent); width: 20px;"></i>
-                        IA Identificou:
-                    </h3>
-                    <div class="result-grid">
-                        <div class="stat-card">
-                            <span class="stat-label">Valor Estimado</span>
-                            <div class="stat-value amount">R$ {{ result.amount }}</div>
-                        </div>
-                        <div class="stat-card">
-                            <span class="stat-label">Categoria Sugerida</span>
-                            <div class="stat-value">{{ result.category }}</div>
-                        </div>
+    {% if history %}
+    <section class="history-section">
+        <h2>
+            <i data-lucide="history"></i>
+            Atividade Recente
+        </h2>
+        <div class="history-grid">
+            {% for item in history %}
+            <div class="history-card">
+                <div class="history-main">
+                    <p>{{ item.input }}</p>
+                    <div class="history-meta">
+                        <i data-lucide="calendar" style="width: 12px; height: 12px; vertical-align: middle;"></i>
+                        {{ item.date|date:"d M, Y" }} às {{ item.date|date:"H:i" }}
                     </div>
                 </div>
-                {% endif %}
-            </section>
-
-            {% if history %}
-            <section class="history-section">
-                <h2>
-                    <i data-lucide="history"></i>
-                    Atividade Recente
-                </h2>
-                <div class="history-grid">
-                    {% for item in history %}
-                    <div class="history-card">
-                        <div class="history-main">
-                            <p>{{ item.input }}</p>
-                            <div class="history-meta">
-                                <i data-lucide="calendar"
-                                    style="width: 12px; height: 12px; vertical-align: middle;"></i>
-                                {{ item.date|date:"d M, Y" }} às {{ item.date|date:"H:i" }}
-                            </div>
-                        </div>
-                        <div class="history-stats">
-                            <div class="price">R$ {{ item.output.amount|default:"0.00" }}</div>
-                            <span class="badge">{{ item.output.category|default:"Indefinido" }}</span>
-                        </div>
-                    </div>
-                    {% endfor %}
+                <div class="history-stats">
+                    <div class="price">R$ {{ item.output.amount|default:"0.00" }}</div>
+                    <span class="badge">{{ item.output.category|default:"Indefinido" }}</span>
                 </div>
-            </section>
-            {% endif %}
-        </main>
-    </div>
-
-    <script>
-        // Inicializa os ícones Lucide
-        lucide.createIcons();
-    </script>
-</body>
-
-</html>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+</main>
+{% endblock %}

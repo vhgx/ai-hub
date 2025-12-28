@@ -6,3 +6,8 @@ Pillow
 numpy
 torch
 tensorflow
+
+# Testing
+pytest
+pytest-django
+pytest-playwright
