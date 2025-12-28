@@ -10,9 +10,13 @@
     </a>
     <p>Organize sua vida financeira com o poder da inteligência artificial.</p>
     <nav class="home-nav">
+        <a href="{% url 'dashboard' %}" class="back-home">
+            <i data-lucide="pie-chart" style="width: 16px;"></i>
+            Dashboard
+        </a>
         <a href="{% url 'home' %}" class="back-home">
-            <i style="width: 16px;"></i>
-            Voltar para Home
+            <i data-lucide="home" style="width: 16px;"></i>
+            Home
         </a>
     </nav>
 </header>

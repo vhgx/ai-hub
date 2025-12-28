@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Dashboard Financeiro | AI Hub{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const ctx = document.getElementById('expensesChart').getContext('2d');
+        const labels = JSON.parse('{{ labels|safe }}');
+        const data = JSON.parse('{{ data|safe }}');
+
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Gastos por Categoria (R$)',
+                    data: data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',
+                        'rgba(54, 162, 235, 0.8)',
+                        'rgba(255, 206, 86, 0.8)',
+                        'rgba(75, 192, 192, 0.8)',
+                        'rgba(153, 102, 255, 0.8)',
+                        'rgba(255, 159, 64, 0.8)',
+                        'rgba(199, 199, 199, 0.8)',
+                        'rgba(83, 102, 255, 0.8)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            color: '#94a3b8'
+                        }
+                    }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}
+
+{% block content %}
+<header>
+    <a href="{% url 'home' %}" style="text-decoration: none;">
+        <h1>Dashboard</h1>
+    </a>
+    <p>Visão geral dos seus gastos categorizados pela IA.</p>
+    <nav class="home-nav">
+        <a href="{% url 'predict' %}" class="back-home">
+            <i data-lucide="plus-circle" style="width: 16px;"></i>
+            Novo Gasto
+        </a>
+        <a href="{% url 'home' %}" class="back-home">
+            <i data-lucide="home" style="width: 16px;"></i>
+            Home
+        </a>
+    </nav>
+</header>
+
+<main class="dashboard-grid"
+    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-top: 2rem;">
+    <!-- Chart Section -->
+    <section class="card" style="height: fit-content;">
+        <h3>Distribuição de Gastos</h3>
+        {% if data == "[]" %}
+        <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
+            <i data-lucide="pie-chart" style="width: 48px; height: 48px; margin-bottom: 1rem; opacity: 0.5;"></i>
+            <p>Nenhum dado para exibir.</p>
+        </div>
+        {% else %}
+        <canvas id="expensesChart"></canvas>
+        {% endif %}
+    </section>
+
+    <!-- List Section -->
+    <section class="history-section">
+        <h2>
+            <i data-lucide="list"></i>
+            Resumo por Categoria
+        </h2>
+        <div class="history-grid">
+            {% for item in expenses %}
+            <div class="history-card" style="justify-content: space-between;">
+                <div class="history-main">
+                    <span class="badge" style="margin: 0;">{{ item.category }}</span>
+                </div>
+                <div class="history-stats">
+                    <div class="price">R$ {{ item.total|floatformat:2 }}</div>
+                </div>
+            </div>
+            {% empty %}
+            <p style="color: var(--text-muted);">Nenhum gasto registrado.</p>
+            {% endfor %}
+        </div>
+    </section>
+</main>
+{% endblock %}
