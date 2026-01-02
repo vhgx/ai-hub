@@ -4,9 +4,9 @@ Pillow
 whitenoise
 
 # IA (serão usados mais adiante)
-numpy
-torch
-tensorflow
+# numpy
+# torch
+# tensorflow
 
 # Testing
 pytest
